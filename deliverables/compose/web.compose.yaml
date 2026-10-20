@@ -1,0 +1,17 @@
+# Lite slice: one HTTP service. Image and probe URL are variables.
+# variable: WEB_IMAGE
+# Check upstream docs before you run this file.
+# $$HEALTH_URL is for the container shell. See the full pack notes.
+
+services:
+  web:
+    image: ${WEB_IMAGE:?set WEB_IMAGE}
+    environment:
+      HEALTH_URL: ${HEALTH_URL:-http://127.0.0.1:8080/health}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS --max-time 4 $$HEALTH_URL || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+      start_interval: 5s

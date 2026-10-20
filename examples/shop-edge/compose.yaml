@@ -1,0 +1,15 @@
+# Filled lite example: one web service. Not a placeholder.
+# registry.example.com/shop/edge:1.4.2 is an example name. Check upstream docs.
+
+services:
+  edge:
+    image: registry.example.com/shop/edge:1.4.2
+    environment:
+      HEALTH_URL: http://127.0.0.1:8080/health
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS --max-time 4 $$HEALTH_URL || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+      start_interval: 5s
